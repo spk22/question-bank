@@ -3,13 +3,11 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:hive/hive.dart';
 import 'package:jamoverflow/config/auth_types.dart';
 import 'package:jamoverflow/constants/dimensions.dart';
-import 'package:jamoverflow/core/shared/login_details.dart';
+import 'package:jamoverflow/features/user_auth/presentation/states/login_details.dart';
 import 'package:jamoverflow/core/shared/providers.dart';
 import 'package:jamoverflow/core/shared/show_alert_dialog.dart';
 import 'package:jamoverflow/features/user_auth/domain/entities/user.dart';
 import 'package:jamoverflow/features/user_auth/domain/usecases/signin.dart';
-import 'package:dartz/dartz.dart' as Dartz;
-import 'package:jamoverflow/core/error/failures.dart' as Failures;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:jamoverflow/features/user_auth/presentation/widgets/details_consumer.dart';
 import 'package:jamoverflow/features/user_home/presentation/pages/home_page.dart';
@@ -26,6 +24,8 @@ class _LoginFormState extends State<LoginForm> {
   List<String> authRoles = ['user', 'admin'];
   bool newStatus = false;
   var boxName = "user";
+  bool isValidated = true;
+  String failureMessage;
 
   @override
   Widget build(BuildContext context) {
@@ -101,7 +101,7 @@ class _LoginFormState extends State<LoginForm> {
     String email = _formKey.currentState.value['email'];
     String password = _formKey.currentState.value['password'];
     var authType = nameToAuthType[_formKey.currentState.value['authType']];
-    final Dartz.Either<Failures.Failure, User> authEither = await usecase
+    final authEither = await usecase
         .call(Param(authType: authType, email: email, password: password));
     authEither.fold(
       (failure) => showAlertDialog(
@@ -111,13 +111,32 @@ class _LoginFormState extends State<LoginForm> {
         defaultActionText: 'OK',
       ),
       (user) async {
-        // one-time user instantiated for this login session
-        singleUser = SingleUser(Provider<User>((ref) => user));
-        // navigate to home page
-        await Navigator.push(
-          context,
-          MaterialPageRoute(builder: (_) => HomePage()),
+        // check for validation here, before navigating to next page
+        var uidString = user.uid.value.fold(
+          (valueFailure) {
+            isValidated = false;
+            // uidString stores failureMessage in case of failure
+            return valueFailure.message;
+          },
+          (val) => val,
         );
+        if (isValidated) {
+          // one-time user instantiated for this login session
+          singleUser = SingleUser(Provider<User>((ref) => user));
+          // navigate to home page
+          await Navigator.push(
+            context,
+            MaterialPageRoute(builder: (_) => HomePage()),
+          );
+        } else {
+          await showAlertDialog(
+            context: context,
+            title: 'Some Error',
+            content:
+                uidString, // uidString stores failureMessage in case of failure
+            defaultActionText: 'OK',
+          );
+        }
       },
     );
   }

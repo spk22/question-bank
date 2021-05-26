@@ -3,7 +3,7 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:jamoverflow/constants/colors.dart';
 import 'package:jamoverflow/constants/dimensions.dart';
-import 'package:jamoverflow/core/shared/login_details.dart';
+import 'package:jamoverflow/features/user_auth/presentation/states/login_details.dart';
 import 'package:jamoverflow/core/shared/providers.dart';
 
 class DetailsConsumer extends ConsumerWidget {

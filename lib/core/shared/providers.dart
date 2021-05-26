@@ -2,9 +2,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive/hive.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:jamoverflow/core/services/parse_service.dart';
-import 'package:jamoverflow/core/shared/login_details.dart';
+import 'package:jamoverflow/features/user_auth/presentation/states/login_details.dart';
 import 'package:jamoverflow/core/shared/network_info.dart';
-import 'package:jamoverflow/core/shared/usecase_interface.dart';
 import 'package:jamoverflow/features/user_auth/data/datasources/auth_datasource.dart';
 import 'package:jamoverflow/features/user_auth/data/repositories/auth.dart';
 import 'package:jamoverflow/features/user_auth/domain/entities/user.dart';
@@ -29,26 +28,26 @@ class SingleUser {
 SingleUser singleUser;
 
 // Signin Usecase Provider
-final signinUsecaseProvider = Provider<UseCase>((ref) {
+final signinUsecaseProvider = Provider<SignIn>((ref) {
   final backend = ref.read(backendProvider);
-  final authDataSource = AuthDataSource(backend);
   final internetConnectionChecker = InternetConnectionChecker();
   final networkInfo = NetworkInfo(internetConnectionChecker);
-  final authContract =
-      Auth(dataSource: authDataSource, networkInfo: networkInfo);
-  final UseCase usecase = SignIn(authContract);
+  final authDataSource =
+      AuthDataSource(service: backend, networkInfo: networkInfo);
+  final authContract = Auth(dataSource: authDataSource);
+  final usecase = SignIn(authContract);
   return usecase;
 });
 
 // Signup Usecase Provider
-final signupUsecaseProvider = Provider<UseCase>((ref) {
+final signupUsecaseProvider = Provider<SignUp>((ref) {
   final backend = ref.read(backendProvider);
-  final authDataSource = AuthDataSource(backend);
   final internetConnectionChecker = InternetConnectionChecker();
   final networkInfo = NetworkInfo(internetConnectionChecker);
-  final authContract =
-      Auth(dataSource: authDataSource, networkInfo: networkInfo);
-  final UseCase usecase = SignUp(authContract);
+  final authDataSource =
+      AuthDataSource(service: backend, networkInfo: networkInfo);
+  final authContract = Auth(dataSource: authDataSource);
+  final usecase = SignUp(authContract);
   return usecase;
 });
 

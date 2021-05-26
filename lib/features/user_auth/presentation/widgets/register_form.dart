@@ -6,10 +6,7 @@ import 'package:jamoverflow/constants/colors.dart';
 import 'package:jamoverflow/constants/dimensions.dart';
 import 'package:jamoverflow/core/shared/providers.dart';
 import 'package:jamoverflow/core/shared/show_alert_dialog.dart';
-import 'package:jamoverflow/features/user_auth/domain/entities/user.dart';
 import 'package:jamoverflow/features/user_auth/domain/usecases/signup.dart';
-import 'package:dartz/dartz.dart' as Dartz;
-import 'package:jamoverflow/core/error/failures.dart' as Failures;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class RegisterForm extends StatefulWidget {
@@ -139,7 +136,7 @@ class _RegisterFormState extends State<RegisterForm> {
     final usecase = context.read(signupUsecaseProvider);
     String email = _formKey.currentState.value['email'];
     String password = _formKey.currentState.value['password'];
-    final Dartz.Either<Failures.Failure, User> authEither =
+    final authEither =
         await usecase.call(Param(email: email, password: password));
     authEither.fold(
       (failure) => showAlertDialog(

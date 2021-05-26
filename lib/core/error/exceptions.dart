@@ -1,6 +1,26 @@
 // Repository will catch these exceptions and will transform them into Failures
-class ServerException implements Exception {}
+import 'package:flutter/foundation.dart';
 
-class RoleMismatchException implements Exception {}
+class DisconnectedException implements Exception {
+  final String message;
 
-class DefaultErrorException implements Exception {}
+  DisconnectedException({@required this.message});
+}
+
+class ServerException implements Exception {
+  final String message;
+
+  ServerException({@required this.message});
+}
+
+class RoleMismatchException implements Exception {
+  final String message;
+
+  RoleMismatchException({@required this.message});
+}
+
+class DefaultErrorException implements Exception {
+  final String message;
+
+  DefaultErrorException({@required this.message});
+}

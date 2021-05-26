@@ -1,7 +1,6 @@
 import 'package:jamoverflow/config/auth_types.dart';
 import 'package:jamoverflow/constants/app_keys.dart';
 import 'package:jamoverflow/core/error/exceptions.dart';
-import 'package:jamoverflow/core/error/failures.dart';
 import 'package:jamoverflow/core/shared/auth_status.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 
@@ -59,8 +58,7 @@ class ParseService {
         userId: user.objectId,
       );
     } else {
-      FailureMessage.DEFAULT_MESSAGE = authResponse.error.message;
-      throw DefaultErrorException();
+      throw DefaultErrorException(message: authResponse.error.message);
     }
 
     return status;
@@ -82,8 +80,7 @@ class ParseService {
       return AuthStatus(
           success: true, userId: null, state: AuthState.AUTH_SUCCESSFUL);
     } else {
-      FailureMessage.DEFAULT_MESSAGE = response.error.message;
-      throw DefaultErrorException();
+      throw DefaultErrorException(message: response.error.message);
     }
   }
 

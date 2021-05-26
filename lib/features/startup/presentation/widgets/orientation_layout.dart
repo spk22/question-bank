@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
 import 'package:jamoverflow/constants/colors.dart';
 import 'package:jamoverflow/constants/dimensions.dart';
-import 'package:jamoverflow/core/shared/login_details.dart';
 import 'package:jamoverflow/core/shared/providers.dart';
 import 'package:jamoverflow/features/user_auth/presentation/pages/login_page.dart';
 import 'package:jamoverflow/features/user_auth/presentation/pages/register_page.dart';
@@ -16,22 +14,9 @@ class OrientationLayout extends StatefulWidget {
 }
 
 class _OrientationLayoutState extends State<OrientationLayout> {
-  // LoginDetails loginDetails;
-
-  // Future<void> setLoginDetails() async {
-  //   String boxName = 'user';
-  //   var box = await Hive.openBox(boxName);
-  //   loginDetails = LoginDetails(
-  //     saveStatus: box.get('isSaved', defaultValue: false),
-  //     email: box.get('email'),
-  //     password: box.get('password'),
-  //   );
-  // }
-
   @override
   void initState() {
     super.initState();
-    // setLoginDetails();
   }
 
   @override

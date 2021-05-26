@@ -34,7 +34,7 @@ class HomePage extends StatelessWidget {
         color: ConstantColors.primaryTextColor,
         alignment: Alignment.center,
         child: Center(
-          child: Text('${user.uid}'),
+          child: Text('${user.uid.value.getOrElse(() => null)}'),
         ),
       ),
     );
@@ -42,7 +42,8 @@ class HomePage extends StatelessWidget {
 
   Future<void> userSignOut(BuildContext context, User user) async {
     final backend = context.read(backendProvider);
-    final bool success = await backend.signOut(user.uid);
+    final bool success =
+        await backend.signOut(user.uid.value.getOrElse(() => null));
     if (success) {
       await Navigator.of(context).pushReplacement(
         MaterialPageRoute(builder: (_) => Startup()),

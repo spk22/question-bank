@@ -1,6 +1,7 @@
-import 'package:jamoverflow/features/user_auth/domain/entities/user.dart';
-
-class UserModel extends User {
-  UserModel({String uid, String email, String password, bool isAdmin})
-      : super(uid: uid, email: email, password: password, isAdmin: isAdmin);
+class UserModel {
+  final String uid;
+  final String email;
+  final String password;
+  final bool isAdmin;
+  UserModel({this.uid, this.email, this.password, this.isAdmin});
 }

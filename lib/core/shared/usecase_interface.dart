@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
-import 'package:jamoverflow/core/error/failures.dart';
+import 'package:jamoverflow/core/error/failure_interfaces.dart';
 
 abstract class UseCase<Type, Param> {
-  Future<Either<Failure, Type>> call(Param param);
+  Future<Either<InfraFailure<Exception>, Type>> call(Param param);
 }
